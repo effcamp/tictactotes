@@ -9,15 +9,21 @@
   </head>
   <body>
     <div class="container">
-      <div id="1" class="board top left"></div>
-      <div id="2" class="board top center"></div>
-      <div id="3" class="board top right"></div>
-      <div id="4" class="board middle left"></div>
-      <div id="5" class="board middle center"></div>
-      <div id="6" class="board middle right"></div>
-      <div id="7" class="board bottom left"></div>
-      <div id="8" class="board bottom center"></div>
-      <div id="9" class="board bottom right"></div>
+      <div class="row">
+        <div id="1" class="board top left"><h1>X</h1></div>
+        <div id="2" class="board top center" onclick="placeMove(this)"></div>
+        <div id="3" class="board top right"></div>
+      </div>
+      <div class="row">
+        <div id="4" class="board middle left"></div>
+        <div id="5" class="board middle center"></div>
+        <div id="6" class="board middle right"></div>
+      </div>
+      <div class="row">
+        <div id="7" class="board bottom left"></div>
+        <div id="8" class="board bottom center"></div>
+        <div id="9" class="board bottom right"></div>
+      </div>
     </div>
     <script src="app.js"></script>
   </body>
