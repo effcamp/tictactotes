@@ -6,51 +6,44 @@
 
 const board = new Array(9).fill(null);
 let boardDiv = [...document.querySelectorAll('.board')];
+let gameCount = 0;
 
 const startGame = e => {
-  e.preventDefault();
-  let user = 1;
   document.getElementById('player').innerText = document.getElementById(
     'name'
   ).value;
+  let user = 1;
 
+  e.preventDefault();
   // console.log(boardDiv);
   boardDiv.forEach(b => {
     b.addEventListener('click', e => placeMove(e, user));
   });
+  while (gameCount < 5) {
+    user = user === 1 ? 2 : 1;
+    console.log('user ' + user);
+    console.log('game ' + gameCount);
+    console.log(board);
+    gameCount++;
+  }
 };
-const placeMove = (e, user) => {
+
+const placeMove = async (e, user) => {
   // console.log(user);
   let shape;
-  shape = document.createElement('h1');
-  shape.className += 'big';
 
   if (user === 1) {
-    shape.innerText = 'X';
+    shape = 'X';
   } else {
-    shape.innerText = 'O';
+    shape = 'O';
   }
   const divId = e.target.id;
-  if (!board[divId]) {
+  if (board[divId] === null) {
     board[divId] = shape;
-    boardDiv[divId].appendChild(board[divId]);
-  } else {
-    console.log('Invalid move');
+    boardDiv[divId].innerText = board[divId];
+    boardDiv[divId].removeEventListener('click', () => placeMove());
   }
-
-  // e.target.appendChild(x);
-  // console.log(e.target.id);
-  // let div = e.target.id;
-
-  // board[div] = x;
-  // console.log(board);
-  // board.forEach((el, i) => {
-  //   if (el) {
-  //     document.getElementById(i).appendChild(el);
-  //   } else {
-  //     // console.log('invalid');
-  //   }
-  // });
+  console.log('test');
 };
 
 const win = () => true;

@@ -22,6 +22,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 80px;
 }
 
 .top {
@@ -32,8 +33,4 @@
 }
 .bottom {
   background-color: beige;
-}
-
-.big {
-  font-size: 80px;
 }
