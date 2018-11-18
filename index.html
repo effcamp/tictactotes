@@ -39,6 +39,22 @@
         <div id="8" class="board bottom right"></div>
       </div>
     </div>
+    <script src="env.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-firestore.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: API.apiKey,
+        authDomain: API.authDomain,
+        databaseURL: API.databaseURL,
+        projectId: API.projectId,
+        storageBucket: API.storageBucket,
+        messagingSenderId: API.messagingSenderId
+      };
+      firebase.initializeApp(config);
+    </script>
     <script src="app.js"></script>
   </body>
 </html>
