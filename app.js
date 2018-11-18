@@ -7,28 +7,26 @@
 const board = new Array(9).fill(null);
 let boardDiv = [...document.querySelectorAll('.board')];
 let gameCount = 0;
+let user = 1;
+let win;
 
 const startGame = e => {
   document.getElementById('player').innerText = document.getElementById(
     'name'
   ).value;
-  let user = 1;
 
   e.preventDefault();
   // console.log(boardDiv);
   boardDiv.forEach(b => {
-    b.addEventListener('click', e => placeMove(e, user));
+    b.addEventListener('click', e => placeMove(e));
   });
-  while (gameCount < 5) {
-    user = user === 1 ? 2 : 1;
-    console.log('user ' + user);
-    console.log('game ' + gameCount);
-    console.log(board);
-    gameCount++;
-  }
+};
+const nextMove = () => {
+  user = user === 1 ? 2 : 1;
+  console.log(board);
 };
 
-const placeMove = async (e, user) => {
+const placeMove = async e => {
   // console.log(user);
   let shape;
 
@@ -42,8 +40,15 @@ const placeMove = async (e, user) => {
     board[divId] = shape;
     boardDiv[divId].innerText = board[divId];
     boardDiv[divId].removeEventListener('click', () => placeMove());
+    checkWin();
+    nextMove();
   }
-  console.log('test');
 };
 
-const win = () => true;
+const checkWin = () => {
+  const check = board.filter(b => b === null);
+  if (check.length === 0) {
+    console.log('Draw!');
+    alert('Draw!');
+  }
+};
