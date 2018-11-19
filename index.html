@@ -45,6 +45,7 @@
     <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase-firestore.js"></script>
     <script>
       // Initialize Firebase
+      console.log(window.process);
       var config = {
         apiKey: API.apiKey || process.env.API_KEY,
         authDomain: API.authDomain || process.env.AUTH_DOMAIN,
