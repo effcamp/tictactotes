@@ -4,3 +4,4 @@ env.js
 node_modules/
 dist
 .cache
+.vscode

@@ -1,8 +1,8 @@
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
 import firestore from 'firebase/firestore';
 
 import dotenv from 'dotenv';
-
+import './styles.css';
 dotenv.config();
 
 // Initialize Firebase
@@ -14,9 +14,10 @@ var config = {
   storageBucket: process.env.STORAGE_BUCKET,
   messagingSenderId: process.env.MESSAGING_SENDER_ID
 };
-const db = firebase.initializeApp(config);
+firebase.initializeApp(config);
 
-db.firestore().settings({
+const db = firebase.firestore();
+db.settings({
   timestampsInSnapshots: true
 });
 
@@ -29,6 +30,8 @@ let name;
 let user = 1;
 let turn;
 let shape;
+
+document.getElementById('start').addEventListener('click', startGame);
 
 const startGame = async e => {
   e.preventDefault();
