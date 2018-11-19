@@ -46,12 +46,13 @@
     <script>
       // Initialize Firebase
       var config = {
-        apiKey: API.apiKey,
-        authDomain: API.authDomain,
-        databaseURL: API.databaseURL,
-        projectId: API.projectId,
-        storageBucket: API.storageBucket,
-        messagingSenderId: API.messagingSenderId
+        apiKey: API.apiKey || process.env.API_KEY,
+        authDomain: API.authDomain || process.env.AUTH_DOMAIN,
+        databaseURL: API.databaseURL || process.env.DATABASE_URL,
+        projectId: API.projectId || process.env.PROJECT_ID,
+        storageBucket: API.storageBucket || process.env.STORAGE_BUCKET,
+        messagingSenderId:
+          API.messagingSenderId || process.env.MESSAGING_SENDER_ID
       };
       firebase.initializeApp(config);
     </script>
