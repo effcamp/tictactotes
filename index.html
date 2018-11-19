@@ -47,13 +47,12 @@
       // Initialize Firebase
       console.log(window.process);
       var config = {
-        apiKey: API.apiKey || process.env.API_KEY,
-        authDomain: API.authDomain || process.env.AUTH_DOMAIN,
-        databaseURL: API.databaseURL || process.env.DATABASE_URL,
-        projectId: API.projectId || process.env.PROJECT_ID,
-        storageBucket: API.storageBucket || process.env.STORAGE_BUCKET,
-        messagingSenderId:
-          API.messagingSenderId || process.env.MESSAGING_SENDER_ID
+        apiKey: API.apiKey || API_KEY,
+        authDomain: API.authDomain || AUTH_DOMAIN,
+        databaseURL: API.databaseURL || DATABASE_URL,
+        projectId: API.projectId || PROJECT_ID,
+        storageBucket: API.storageBucket || STORAGE_BUCKET,
+        messagingSenderId: API.messagingSenderId || MESSAGING_SENDER_ID
       };
       firebase.initializeApp(config);
     </script>
