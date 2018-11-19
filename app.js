@@ -1,81 +1,81 @@
-// window.onload = () => {
-//   // while (true) {
-//   //   console.log(1);
-//   // }
-// };
 const db = firebase.firestore();
 db.settings({
   timestampsInSnapshots: true
 });
 
-const empty = {
-  0: null,
-  1: null,
-  2: null,
-  3: null,
-  4: null,
-  5: null,
-  6: null,
-  7: null,
-  8: null
-};
-
-const games = db.collection('games');
-let gameId;
+const gamesList = db.collection('games');
 let gameA;
 
-const board = new Array(9).fill(null);
+const board = [null, null, null, null, null, null, null, null, null];
 let boardDiv = [...document.querySelectorAll('.board')];
 let name;
 let user = 1;
 let turn;
-let win;
+let shape;
 
 const startGame = async e => {
   e.preventDefault();
   name = document.getElementById('name').value;
   document.getElementById('player').innerText = name;
 
-  const game = await games.get();
+  const games = await gamesList.get();
 
   const queuedGame = [];
-  game.forEach(g => {
+  games.forEach(g => {
     if (!g.data().player1 || !g.data().player2) {
       queuedGame.push(g);
     }
   });
   if (queuedGame.length === 0) {
-    const newGame = await games.add({
+    const newGame = await gamesList.add({
       player1: name
     });
-    gameId = newGame.id;
+    gameA = gamesList.doc(newGame.id);
     // use localstorage to save
   } else {
     if (!queuedGame[0].data().player2) {
-      await games.doc(queuedGame[0].id).update({
+      await gamesList.doc(queuedGame[0].id).update({
         player2: name
       });
 
-      gameId = queuedGame[0].id;
+      gameA = gamesList.doc(queuedGame[0].id);
     } else if (!queuedGame[0].data().player1) {
-      await games.doc(queuedGame[0].id).update({
+      await gamesList.doc(queuedGame[0].id).update({
         player1: name
       });
 
-      gameId = queuedGame[0].id;
+      gameA = gamesList.doc(queuedGame[0].id);
     }
   }
-  gameA = games.doc(gameId);
 
   boardDiv.forEach(b => {
     b.addEventListener('click', e => placeMove(e));
   });
   await gameA.update({
-    ...empty,
-    turn: 1
+    0: null,
+    1: null,
+    2: null,
+    3: null,
+    4: null,
+    5: null,
+    6: null,
+    7: null,
+    8: null,
+    turn: 1,
+    winner: null
   });
 
-  // console.log(games.doc(gameId).update({ turn: 1 }));
+  await gameA.onSnapshot(snapshot => {
+    for (const key in snapshot.data()) {
+      if (key >= 0 && key <= 8) {
+        boardDiv[key].innerText = snapshot.data()[key];
+        board[key] = snapshot.data()[key];
+      }
+    }
+    if (snapshot.data().winner) {
+      console.log(snapshot.data().winner + ' wins!');
+    }
+  });
 };
 const nextMove = async () => {
   turn === 1
@@ -84,7 +84,6 @@ const nextMove = async () => {
 };
 
 const placeMove = async e => {
-  let shape;
   let temp = await gameA.get();
   turn = temp.data().turn;
 
@@ -96,7 +95,7 @@ const placeMove = async e => {
       if (temp.data()[divId] === null) {
         const update = { [divId]: shape };
         await gameA.update(update);
-        checkWin();
+        checkWin(shape);
         nextMove();
       }
     }
@@ -107,35 +106,38 @@ const placeMove = async e => {
       if (temp.data()[divId] === null) {
         const update = { [divId]: shape };
         await gameA.update(update);
-        checkWin();
+        checkWin(shape);
         nextMove();
       }
     }
   }
-  temp = await gameA.get();
-  console.log(temp.data());
+};
 
-  // FIX THIS
-  for (const key in temp) {
-    if (key === boardDiv.id) {
-      boardDiv[key].innerText = temp.data()[key];
-      console.log(key, boardDiv.id);
+const checkWin = shape => {
+  if (
+    (board[0] === shape && board[1] === shape && board[2] === shape) ||
+    (board[3] === shape && board[4] === shape && board[5] === shape) ||
+    (board[6] === shape && board[7] === shape && board[8] === shape) ||
+    (board[0] === shape && board[4] === shape && board[8] === shape) ||
+    (board[2] === shape && board[4] === shape && board[6] === shape) ||
+    (board[0] === shape && board[3] === shape && board[6] === shape) ||
+    (board[1] === shape && board[4] === shape && board[7] === shape) ||
+    (board[2] === shape && board[5] === shape && board[8] === shape)
+  ) {
+    // boardDiv.forEach(b => b.removeEventListener('click', () => placeMove()));
+    gameA.update({ winner: shape });
+  } else {
+    const check = board.filter(i => i === null);
+    if (check.length === 0) {
+      gameA.update({ winner: 'Draw!' });
     }
   }
-
-  // .forEach(b => {
-  //   // console.log(temp.data()[b.id]);
-  //   if (b.id === temp.data()[b.id]) {
-  //     b.innerText = temp.data()[b.id];
-  //     console.log(b);
-  //   }
-  // });
 };
-
-const checkWin = () => {
-  const check = board.filter(b => b === null);
-  if (check.length === 0) {
-    console.log('Draw!');
-    alert('Draw!');
-  }
-};
+// window.addEventListener('beforeunload', async () => {
+//   if (gameA) {
+//     const endGame = await gameA.get();
+//     console.log(endGame.data());
+//     if (!endGame.data().player1 || !endGame.data().player2) {
+//     }
+//   }
+// });
