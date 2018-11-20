@@ -1,0 +1,36 @@
+*,
+*::after,
+*::before {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.container {
+  display: grid;
+  place-content: center;
+}
+.row {
+  display: flex;
+}
+.board {
+  height: 150px;
+  width: 150px;
+  /* height: 100px;
+  width: 100px; */
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 80px;
+}
+
+.top {
+  background-color: antiquewhite;
+}
+.middle {
+  background-color: aquamarine;
+}
+.bottom {
+  background-color: beige;
+}
