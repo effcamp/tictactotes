@@ -1,0 +1,41 @@
+const merge = require('webpack-merge');
+const common = require('./webpack.common.js');
+
+module.exports = merge({
+  mode: 'development',
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /(node_modules|bower_components)/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-transform-runtime']
+          }
+        }
+      }
+    ]
+  },
+  plugins: [new Dotenv()],
+  node: {
+    fs: 'empty'
+  },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    // hot: true,
+    open: true,
+    port: 8080
+  },
+  devtool: 'inline-source-map'
+});

@@ -27,11 +27,10 @@ let gameA;
 const board = [null, null, null, null, null, null, null, null, null];
 let boardDiv = [...document.querySelectorAll('.board')];
 let name;
-let user = 1;
 let turn;
 let shape;
 
-document.getElementById('start').addEventListener('click', startGame);
+document.getElementById('start').addEventListener('click', e => startGame(e));
 
 const startGame = async e => {
   e.preventDefault();
