@@ -5,23 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Tic Tac Totes</title>
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div class="container">
-      <form action="">
-        <label for="name"
-          >Name:
-          <input
-            type="text"
-            id="name"
-            name="name"
-            autofocus
-            autocomplete="off"
-          />
-        </label>
-        <input type="submit" id="start">Start!</input>
-      </form>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        autofocus
+        autocomplete="off"
+        placeholder="Name"
+      />
+      <input type="submit" id="start" value="Start Game" />
       <h1 class="player" id="player"></h1>
       <div class="row">
         <div id="0" class="board top left"></div>
@@ -39,7 +35,12 @@
         <div id="8" class="board bottom right"></div>
       </div>
     </div>
+    <div class="modal modal-hidden">
+      <div class="modal-content">
+        <h1 id="winner"></h1>
+        <button id="exit">New Game</button>
+      </div>
+    </div>
     <script src="bundle.js"></script>
   </body>
 </html>
-

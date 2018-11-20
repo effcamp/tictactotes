@@ -1,8 +1,9 @@
 const firebase = require('firebase/app');
 require('firebase/firestore');
 require('dotenv').config();
+
 // Initialize Firebase
-var config = {
+const config = {
   apiKey: process.env.API_KEY,
   authDomain: process.env.AUTH_DOMAIN,
   databaseURL: process.env.DATABASE_URL,
@@ -22,6 +23,7 @@ let gameA;
 
 const board = [null, null, null, null, null, null, null, null, null];
 let boardDiv = [...document.querySelectorAll('.board')];
+let player1 = null;
 let name;
 let turn;
 let shape;
@@ -32,7 +34,8 @@ const startGame = async e => {
   e.preventDefault();
   name = document.getElementById('name').value;
   document.getElementById('player').innerText = name;
-
+  document.getElementById('name').remove();
+  document.getElementById('start').remove();
   const games = await gamesList.get();
 
   const queuedGame = [];
@@ -46,20 +49,22 @@ const startGame = async e => {
       player1: name
     });
     gameA = gamesList.doc(newGame.id);
+    player1 = true;
     // use localstorage to save
   } else {
     if (!queuedGame[0].data().player2) {
       await gamesList.doc(queuedGame[0].id).update({
         player2: name
       });
-
       gameA = gamesList.doc(queuedGame[0].id);
+      player1 = false;
     } else if (!queuedGame[0].data().player1) {
       await gamesList.doc(queuedGame[0].id).update({
         player1: name
       });
 
       gameA = gamesList.doc(queuedGame[0].id);
+      player1 = true;
     }
   }
 
@@ -80,7 +85,7 @@ const startGame = async e => {
     winner: null
   });
 
-  await gameA.onSnapshot(snapshot => {
+  const unsubscribe = gameA.onSnapshot(snapshot => {
     for (const key in snapshot.data()) {
       if (key >= 0 && key <= 8) {
         boardDiv[key].innerText = snapshot.data()[key];
@@ -88,9 +93,20 @@ const startGame = async e => {
       }
     }
     if (snapshot.data().winner) {
-      console.log(snapshot.data().winner + ' wins!');
+      showModal(snapshot.data().winner);
+    } else if (
+      snapshot.data().player1 === null ||
+      snapshot.data().player2 === null
+    ) {
+      const msg = 'The other player has quit';
+      showModal(msg);
+      gameA.delete();
     }
   });
+  if (!gameA) {
+    // unsubscribe();
+    console.log(unsubscribe);
+  }
 };
 const nextMove = async () => {
   turn === 1
@@ -148,11 +164,25 @@ const checkWin = shape => {
     }
   }
 };
-// window.addEventListener('beforeunload', async () => {
-//   if (gameA) {
-//     const endGame = await gameA.get();
-//     console.log(endGame.data());
-//     if (!endGame.data().player1 || !endGame.data().player2) {
-//     }
-//   }
-// });
+
+const showModal = txt => {
+  document.querySelector('.modal').classList.remove('modal-hidden');
+  document.querySelector('#winner').innerHTML = txt;
+  document.querySelector('#exit').addEventListener('click', () => newGame());
+};
+
+const newGame = () => {
+  document.querySelector('.modal').classList.add('modal-hidden');
+  gameA.delete();
+  location.reload();
+};
+
+window.addEventListener('beforeunload', async () => {
+  if (gameA) {
+    if (player1) {
+      await gameA.update({ player1: null });
+    } else {
+      await gameA.update({ player2: null });
+    }
+  }
+});

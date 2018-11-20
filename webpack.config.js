@@ -27,8 +27,10 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
+    watchContentBase: true,
     // hot: true,
     open: true,
     port: 8080
-  }
+  },
+  devtool: 'inline-source-map'
 };
