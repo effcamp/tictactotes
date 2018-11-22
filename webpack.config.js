@@ -31,6 +31,6 @@ module.exports = {
     // hot: true,
     open: true,
     port: 8080
-  },
-  devtool: 'inline-source-map'
+  }
+  // devtool: 'inline-source-map'
 };

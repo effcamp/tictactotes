@@ -39,6 +39,7 @@ const startGame = async e => {
   const games = await gamesList.get();
 
   const queuedGame = [];
+  // TODO: delete any leftover games
   games.forEach(g => {
     if (!g.data().player1 || !g.data().player2) {
       queuedGame.push(g);
@@ -104,8 +105,8 @@ const startGame = async e => {
     }
   });
   if (!gameA) {
-    // unsubscribe();
-    console.log(unsubscribe);
+    unsubscribe();
+    // console.log(unsubscribe);
   }
 };
 const nextMove = async () => {
