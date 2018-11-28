@@ -12,7 +12,7 @@ body {
 .container {
   display: grid;
   text-align: center;
-  place-content: center;
+  justify-content: center;
   align-items: center;
   margin-top: 20px;
 }
@@ -26,10 +26,12 @@ input {
 }
 .row {
   display: flex;
+  justify-content: center;
 }
 .board {
-  height: 150px;
-  width: 150px;
+  height: 25vw;
+  width: 25vw;
+  /* padding-top: 100%; */
   /* height: 100px;
   width: 100px; */
   border: 1px solid black;
@@ -67,4 +69,7 @@ input {
 
 .modal-hidden {
   display: none;
+}
+.board-container {
+  max-width: 100%;
 }
