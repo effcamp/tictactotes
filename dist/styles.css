@@ -31,6 +31,8 @@ input {
 .board {
   height: 25vw;
   width: 25vw;
+  max-width: 230px;
+  max-height: 230px;
   /* padding-top: 100%; */
   /* height: 100px;
   width: 100px; */
